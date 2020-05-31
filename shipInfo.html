@@ -32,6 +32,13 @@
         <section class="form-wrap">
             <h2 style="font-family:  Algerian; text-align:center; margin-top: 25px;">Ship Information</h2>
 
+            <div id="alertOK" class="alert alert-success" role="alert" style="display: none; margin: 15px 310px 0 200px;">
+                SUCCESS!
+            </div>
+            <div id="alertNOTOK" class="alert alert-danger" role="alert" style="display: none; margin: 15px 310px 0 200px;">
+                FAILED!
+            </div>
+
             <form id="shipInfoForm">
                 <!-- 1. Sender Information -->
             <div>
@@ -121,12 +128,21 @@
 
                     success: function (result){
                         console.log(result);
+                        
                         document.getElementById("shipInfoForm").reset();
+                        document.getElementById("alertOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertOK").style["display"] = "none";
+                        }, 5000);
                     },
                     error: function(result){
                         console.log(result);
+
                         // show error message
-                        // alert("failed");
+                        document.getElementById("alertNOTOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertNOTOK").style["display"] = "none";
+                        }, 5000);
                     }
                 })
             }

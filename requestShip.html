@@ -31,7 +31,16 @@
         </header>
 
         <section class="form-wrap">
+            
             <h2 style="font-family:  Algerian; text-align:center; margin-top: 25px;">Request ship</h2>
+
+            <div id="alertOK" class="alert alert-success" role="alert" style="display: none; margin: 15px 310px 0 200px;">
+                SUCCESS!
+            </div>
+            <div id="alertNOTOK" class="alert alert-danger" role="alert" style="display: none; margin: 15px 310px 0 200px;">
+                FAILED!
+            </div>
+            
 
             <form id="requestShipForm">
             <div>
@@ -167,16 +176,19 @@
                     data: JSON.stringify(data),
 
                     success: function (result){
-                        // var parsed_data = JSON.parse(result);
-                        // alert(parsed_data.name);
-                        // alert(parsed_data.PhoneSend);
-
                         document.getElementById("requestShipForm").reset();
-                        // location.reload();
+                        
+                        document.getElementById("alertOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertOK").style["display"] = "none";
+                        }, 5000);
                     },
                     error: function(){
                         // show error message
-                        alert("failed");
+                        document.getElementById("alertNOTOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertNOTOK").style["display"] = "none";
+                        }, 5000);
                     }
                 })
             }
