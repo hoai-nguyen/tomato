@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="js/vendor/jquery-3.1.0.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+        <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/cognito-auth.js"></script>
+    </head>
+    <body>
+        <div id="noCognitoMessage" class="configMessage" style="display: none;">
+            <div class="backdrop"></div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">No Cognito User Pool Configured</h3>
+                </div>
+                <div class="panel-body">
+                    <p>There is no user pool configured in <a href="/js/config.js">/js/config.js</a>. You'll configure this in Module 2 of the workshop.</p>
+                </div>
+            </div>
+        </div>
+
+        <header>
+        </header>
+
+        <section class="form-wrap">
+            <h2 style="font-family:  Algerian; text-align:center; margin-top: 25px;">Ship Information</h2>
+
+            <form id="shipInfoForm">
+                <!-- 1. Sender Information -->
+            <div>
+
+                <a class="btn btn-primary btn-lg disabled" style="margin:0;margin-right:auto;display:block;margin-top:2%;margin-bottom:0%">Sender Information</a> 
+                <div class="spacer" style="height: 20px;"></div>
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px">OrderID</label>
+                    <input style="width: 550px;" type="text" id="OrderID"  pattern=".*" required>
+                </div>
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px;">Shipper's full name </label>
+                    <input style="width: 550px;" type="text" id="fullNameShipper"  pattern=".*" required>
+                </div>
+
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px">Shipper's Email</label>
+                    <input style="width: 550px;" type="email" id="emailShipper"  pattern=".*" required>
+                </div>
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 50px">Receive Address</label>
+                    <textarea style="margin: 0px;width: 550px;height: 50px;" type="text" id="receiveItemAddress"  pattern=".*" required></textarea>
+                </div>
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 50px">Send Address</label>
+                    <textarea style="margin: 0px;width: 550px;height: 50px;" type="text" id="sendItemAddress"  pattern=".*" required></textarea>
+                </div>
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px" for="status">Ship status</label>
+                    <style>
+                        .bld {font-weight:bold;color: indianred;}
+                       </style>
+                    <select id="status" class="bld">
+                        <option value="new">New</option>
+                        <option class="bld" value="picked">Picked</option>
+                        <option value="succeed">Succeed</option>
+                        <option value="failed" selected>Failed</option>
+                        <option value="return" selected>Return</option>
+                    </select>
+
+                </div>
+                <div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px">Pick Date time</label>
+                    <input style="width: 550px;" type="datetime-local" id="pickDateTime"  pattern=".*" required>
+                </div>
+            </div>    
+        
+            <!-- 3. Submit button -->
+            <div style="margin-top:150px">
+                <input onclick="onLoadData()" id="btnLoadData" readonly="readonly" style="cursor: pointer; text-align: center;margin-left:200px ;width:180px; height:50px;background-color:whitesmoke;font: 20px Arial;" value="Load">
+                <input type="submit" onclick="onClearData()" id="btnClear" style="margin-left:80px ;width:180px; height:50px;background-color:whitesmoke;font: 20px Arial;" value="Clear">
+                <input type="submit" onclick="onClickSubmit()" id="btnSubmit" style="margin-left:100px ;width:210px; height:50px;background-color: tomato;font: 20px Arial;" value="Submit">
+            </div>
+            <div class="spacer" style="height: 60px;"></div>
+            </form>
+        </section>
+        <script>
+
+            function onClickSubmit(){
+                // Send info
+                var OrderID = document.getElementById("OrderID").value;
+                var fullNameShipper = document.getElementById("fullNameShipper").value;
+                var emailShipper = document.getElementById("emailShipper").value;
+                var receiveItemAddress = document.getElementById("receiveItemAddress").value
+                var sendItemAddress = document.getElementById("sendItemAddress").value;
+                var status = document.getElementById("status").value;
+
+                var data = {
+                    OrderID: OrderID,
+                    fullNameShipper: fullNameShipper,
+                    emailShipper: emailShipper,
+                    receiveItemAddress: receiveItemAddress,
+                    sendItemAddress: sendItemAddress,
+                    status: status
+                }
+                // request data 
+                $.ajax({
+                    type: POST,
+                    url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/shipinfo",
+                    dataType: "json",
+                    crossDomain: "true",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+
+                    success: function (result){
+                        var parsed_data = JSON.parse(result);
+                        alert(parsed_data.name);
+                        alert(parsed_data.PhoneSend);
+
+                        document.getElementById("contact-form").reset();
+                        location.reload();
+                    },
+                    error: function(){
+                        // show error message
+                        alert("failed");
+                    }
+                })
+            }
+            function onLoadData(){
+                // Send info
+                document.getElementById("OrderID").value = "ID0012";
+                document.getElementById("fullNameShipper").value = "Nguyen Van Ship";
+                document.getElementById("emailShipper").value = "shipper@gmail.com";
+                document.getElementById("receiveItemAddress").value = "471-0034 Aichi Nagoya Toyotashi";
+                document.getElementById("sendItemAddress").value = "471-0088 Aichi Nagoya Toyotashi";
+                document.getElementById("status").value = "new";
+            }
+
+            function onClearData() {
+                location.reload(true);  
+                // document.getElementById("requestShipForm").reset();
+            }
+
+        </script>
+
+    </body>
+</html>
