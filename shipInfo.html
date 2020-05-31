@@ -43,24 +43,23 @@
                 <!-- 1. Sender Information -->
             <div>
 
-                <a class="btn btn-primary btn-lg disabled" style="margin:0;margin-right:auto;display:block;margin-top:2%;margin-bottom:0%">Sender Information</a> 
+                <a class="btn btn-primary btn-lg disabled" style="margin:0;margin-right:auto;display:block;margin-top:2%;margin-bottom:0%">Order Information</a> 
                 <div class="spacer" style="height: 20px;"></div>
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 15px">OrderID</label>
                     <input style="width: 550px;" type="text" id="OrderID"  pattern=".*" required>
                 </div>
                 <div>
-                    <label style="width: 200px;margin-left: 200px; margin-top: 15px;">Shipper's full name </label>
-                    <input style="width: 550px;" type="text" id="fullNameShipper"  pattern=".*" required>
-                </div>
-
-                <div>
-                    <label style="width: 200px;margin-left: 200px; margin-top: 15px">Shipper's Email</label>
-                    <input style="width: 550px;" type="email" id="emailShipper"  pattern=".*" required>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px">Receive's Email</label>
+                    <input style="width: 550px;" type="email" id="emailReceive"  pattern=".*" required>
                 </div>
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 50px">Receive Address</label>
                     <textarea style="margin: 0px;width: 550px;height: 50px;" type="text" id="receiveItemAddress"  pattern=".*" required></textarea>
+                </div>
+				<div>
+                    <label style="width: 200px;margin-left: 200px; margin-top: 15px;">Send's Email </label>
+                    <input style="width: 550px;" type="text" id="emailSend"  pattern=".*" required>
                 </div>
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 50px">Send Address</label>
@@ -86,7 +85,7 @@
                 </div>
         
             <!-- 3. Submit button -->
-            <div style="margin-top:150px">
+            <div style="margin-top:50px">
                 <input onclick="onLoadData()" id="btnLoadData" readonly="readonly" style="cursor: pointer; text-align: center;margin-left:200px ;width:180px; height:50px;background-color:whitesmoke;font: 20px Arial;" value="Load">
                 <input type="submit" onclick="onClearData()" id="btnClear" style="margin-left:80px ;width:180px; height:50px;background-color:whitesmoke;font: 20px Arial;" value="Clear">
                 <input type="submit" onclick="onClickSubmit((event))" id="btnSubmit" style="margin-left:100px ;width:210px; height:50px;background-color: tomato;font: 20px Arial;" value="Submit">
@@ -101,7 +100,36 @@
 				const inputOrderID = urlParams.get('OrderID');
                 document.getElementById("OrderID").value = inputOrderID;
                 
-                // TODO fetch infor of order to update to UI
+				var dataInfo = {
+                    OrderID: inputOrderID
+                }
+                // fetch infor of order to update to UI
+                $.ajax({
+                    type: 'POST',
+                    url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/getinfo",
+                    dataType: "json",
+                    crossDomain: "true",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(dataInfo),
+
+                    success: function (result){
+                        console.log(result);
+						var parsed_data = JSON.parse(result.body);// create an object with the key of the array
+ 						document.getElementById("emailReceive").value = parsed_data.ShopEmail || '';
+						document.getElementById("receiveItemAddress").value = parsed_data.PickItemAddress || '';
+						document.getElementById("emailSend").value = parsed_data.CustomerEmail || '';
+						document.getElementById("sendItemAddress").value = parsed_data.DeliveryAddress || '';                        
+                    },
+                    error: function(result){
+                        console.log(result);
+
+                        // show error message
+                        document.getElementById("alertNOTOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertNOTOK").style["display"] = "none";
+                        }, 5000);
+                    }
+                })
 			};
 
             function onClickSubmit(e){
@@ -129,7 +157,7 @@
                     success: function (result){
                         console.log(result);
                         
-                        document.getElementById("shipInfoForm").reset();
+                        // document.getElementById("shipInfoForm").reset();
                         document.getElementById("alertOK").style["display"] = "block";
                         setTimeout(function(){
                             document.getElementById("alertOK").style["display"] = "none";
