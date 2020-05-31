@@ -33,6 +33,13 @@
         <section class="form-wrap">
             <h2 style="font-family:  Algerian; text-align:center; margin-top: 25px;">Re-delivery</h2>
 
+            <div id="alertOK" class="alert alert-success" role="alert" style="display: none; margin: 15px 310px 0 200px;">
+                SUCCESS!
+            </div>
+            <div id="alertNOTOK" class="alert alert-danger" role="alert" style="display: none; margin: 15px 310px 0 200px;">
+                FAILED!
+            </div>
+
             <form id="reDeliveryForm">
                 <!-- 1. Sender Information -->
             <div>
@@ -57,7 +64,7 @@
             <div style="margin-top:150px">
                 <input onclick="onLoadData()" id="btnLoadData" readonly="readonly" style="cursor: pointer; text-align: center;margin-left:200px ;width:180px; height:50px;background-color:whitesmoke;font: 20px Arial;" value="Load">
                 <input type="submit" onclick="onClearData()" id="btnClear" style="margin-left:80px ;width:180px; height:50px;background-color:whitesmoke;font: 20px Arial;" value="Clear">
-                <input type="submit" onclick="onClickSubmit()" id="btnSubmit" style="margin-left:100px ;width:210px; height:50px;background-color: tomato;font: 20px Arial;" value="Submit">
+                <input type="submit" onclick="onClickSubmit((event))" id="btnSubmit" style="margin-left:100px ;width:210px; height:50px;background-color: tomato;font: 20px Arial;" value="Submit">
             </div>
             <div class="spacer" style="height: 60px;"></div>
             </form>
@@ -70,7 +77,8 @@
 				const inputOrderID = urlParams.get('OrderID');
 				document.getElementById("OrderID").value = inputOrderID;
 			};
-            function onClickSubmit(){
+            function onClickSubmit(e){
+                e.preventDefault();
                 // Send info
                 var OrderID = document.getElementById("OrderID").value;
                 var receiveItemAddress = document.getElementById("receiveItemAddress").value;
@@ -83,7 +91,7 @@
                 }
                 // request data 
                 $.ajax({
-                    type: POST,
+                    type: 'POST',
                     url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/redelivery",
                     dataType: "json",
                     crossDomain: "true",
@@ -91,15 +99,19 @@
                     data: JSON.stringify(data),
 
                     success: function (result){
-                        var parsed_data = JSON.parse(result);
-                        alert("Sussessful!");
-          
                         document.getElementById("reDeliveryForm").reset();
-                        location.reload();
+                       
+                        document.getElementById("alertOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertOK").style["display"] = "none";
+                        }, 5000);
                     },
                     error: function(){
                         // show error message
-                        alert("failed");
+                        document.getElementById("alertNOTOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertNOTOK").style["display"] = "none";
+                        }, 5000);
                     }
                 })
             }
@@ -111,8 +123,7 @@
             }
 
             function onClearData() {
-                location.reload(true);  
-                // document.getElementById("requestShipForm").reset();
+                document.getElementById("reDeliveryForm").reset();
             }
 
         </script>
