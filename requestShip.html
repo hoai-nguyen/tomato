@@ -110,7 +110,7 @@
         <script>
 
             function onClickSubmit(e){
-				//e.preventDefault();
+				e.preventDefault();
 				// check full name
 							
 				// check datetime
@@ -121,14 +121,14 @@
 				var today = new Date();
 				today.setHours(0,0,0,0);
 
-				if(varDate < today) {
-					alert ("Please enter valid date time");
-					return;
-				}
-				if(varDate2 < today) {
-					alert ("Please enter valid date time");
-					return;
-				}
+				// if(varDate < today) {
+				// 	alert ("Please enter valid date time");
+				// 	return;
+				// }
+				// if(varDate2 < today) {
+				// 	alert ("Please enter valid date time");
+				// 	return;
+				// }
 				
                 // Send info
                 var fullNameSend = document.getElementById("fullNameSend").value;
@@ -159,7 +159,7 @@
                 }
                 // request data 
                 $.ajax({
-                    type: POST,
+                    type: 'POST',
                     url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/requestship",
                     dataType: "json",
                     crossDomain: "true",
@@ -167,12 +167,12 @@
                     data: JSON.stringify(data),
 
                     success: function (result){
-                        var parsed_data = JSON.parse(result);
-                        alert(parsed_data.name);
-                        alert(parsed_data.PhoneSend);
+                        // var parsed_data = JSON.parse(result);
+                        // alert(parsed_data.name);
+                        // alert(parsed_data.PhoneSend);
 
-                        document.getElementById("contact-form").reset();
-                        location.reload();
+                        document.getElementById("requestShipForm").reset();
+                        // location.reload();
                     },
                     error: function(){
                         // show error message
@@ -197,8 +197,8 @@
             }
 
             function onClearData() {
-                location.reload(true);  
-                // document.getElementById("requestShipForm").reset();
+                // location.reload(true);  
+                document.getElementById("requestShipForm").reset();
             }
 
         </script>
