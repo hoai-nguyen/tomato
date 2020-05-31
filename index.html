@@ -1,51 +1,53 @@
 <!DOCTYPE html>
- <head>
- <meta charset="utf-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
- <title></title>
- <meta name="description" content="">
- <meta name="viewport" content="width=device-width">
- <link rel="stylesheet" href="css/font.css">
- <link rel="stylesheet" href="css/normalize.css">
- <link rel="stylesheet" href="css/index.css">
- <link rel="stylesheet" href="css/message.css">
- <link rel="stylesheet" href="css/bootstrap.css">
- <script src="js/vendor/jquery-3.1.0.js"></script>
- <script src="js/vendor/bootstrap.min.js"></script>
- <script src="js/vendor/aws-cognito-sdk.min.js"></script>
- <script src="js/vendor/amazon-cognito-identity.min.js"></script>
- <script src="js/config.js"></script>
- <script src="js/cognito-auth.js"></script>
- </head>
- <body>
- 
- <div id="noCognitoMessage" class="configMessage" style="display: none;">
- <div class="backdrop"></div>
- <div class="panel panel-default">
- <div class="panel-heading">
- <h3 class="panel-title">No Cognito User Pool Configured</h3>
- </div>
- <div class="panel-body">
- <p>There is no user pool configured in <a href="/js/config.js">/js/config.js</a>. You'll configure this in Module 2 of the workshop.</p>
- </div>
- </div>
- </div>
- 
- <header>
- <!--img src="images/logo.png"-->
- </header>
- 
- <section class="form-wrap">
- <h1 style="font-family: Algerian">TOMATO Express delivery system</h1>
- 
- <div>
- <a class="btn btn-primary btn-lg" style="margin-left:auto;margin-right:auto;display:block;margin-top:22%;margin-bottom:0%;width: 400px;" 
- href="signin.html">Sign In</a>
- <a class="btn btn-primary btn-lg" style="margin-left:auto;margin-right:auto;display:block;margin-top:10%;margin-bottom:0%; width: 400px;" 
- href="register.html">Create new account</a>
- </div>
- 
- </section>
- 
- </body>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/message.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/vendor/jquery-3.1.0.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/cognito-auth.js"></script>
+</head>
+
+<body>
+
+    <div id="noCognitoMessage" class="configMessage" style="display: none;">
+        <div class="backdrop"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">No Cognito User Pool Configured</h3>
+            </div>
+            <div class="panel-body">
+                <p>There is no user pool configured in <a href="/js/config.js">/js/config.js</a>. You'll configure this
+                    in Module 2 of the workshop.</p>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <!--img src="images/logo.png"-->
+    </header>
+    <h1 style="font-family: Algerian">TOMATO Express delivery system</h1>
+    <section class="form-wrap">
+        <div>
+            <a class="btn btn-primary btn-lg menu-item" href="signin.html">Sign In</a>
+            <a class="btn btn-primary btn-lg menu-item" href="register.html">Sign Up</a>
+            <a class="btn btn-primary btn-lg menu-item" href="requestShip.html">Request Ship</a>
+            <a class="btn btn-primary btn-lg menu-item" href="shipInfo.html">Update Shipping Status</a>
+            <a class="btn btn-primary btn-lg menu-item" href="re_delivery.html">Request Re-delivery</a>
+        </div>
+    </section>
+
+</body>
+
 </html>
