@@ -27,10 +27,11 @@
         </div>
 
         <header>
+            <a class="btn btn-primary menu-item" style="margin-top:20px;margin-left:20px" href="index.html">Back to Home</a>
         </header>
 
         <section class="form-wrap">
-            <h2 style="font-family:  Algerian; text-align:center; margin-top: 25px;">Ship Information</h2>
+            <h2 style="font-family:  Segoe UI; text-align:center;font-size:50px">Ship Information</h2>
 
             <div id="alertOK" class="alert alert-success" role="alert" style="display: none; margin: 15px 310px 0 200px;">
                 SUCCESS!
@@ -48,6 +49,7 @@
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 15px">OrderID</label>
                     <input style="width: 550px;" type="text" id="OrderID"  pattern=".*" required>
+                    <button class="btn-secondary" onclick="getShipInfo((event))">Get Information</button>
                 </div>
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 15px">Receive's Email</label>
@@ -70,12 +72,12 @@
                     <style>
                         .bld {font-weight:bold;color: indianred;}
                        </style>
-                    <select id="status" class="bld">
-                        <option value="new">New</option>
-                        <option class="bld" value="picked">Picked</option>
-                        <option value="succeed">Succeed</option>
-                        <option value="failed" selected>Failed</option>
-                        <option value="return" selected>Return</option>
+                    <select id="status">
+                        <option style="color: orange;" value="new">New</option>
+                        <option style="color: blue;" value="picked">Picked</option>
+                        <option style="color: green;" value="succeed">Succeed</option>
+                        <option style="color: red;" value="failed" selected>Failed</option>
+                        <option style="color: saddlebrown;" value="return" selected>Return</option>
                     </select>
 
                 </div>
@@ -94,23 +96,21 @@
             </form>
         </section>
         <script>
-            window.onload = function(){
-				const queryString = window.location.search;
-				const urlParams = new URLSearchParams(queryString);
-				const inputOrderID = urlParams.get('OrderID');
-                document.getElementById("OrderID").value = inputOrderID;
-                
-				var dataInfo = {
-                    OrderID: inputOrderID
-                }
-                // fetch infor of order to update to UI
+            function getShipInfo(e){
+                e.preventDefault();
+                loadShipInfo({
+                    OrderID: document.getElementById("OrderID").value,
+                });
+            }
+
+            function loadShipInfo(shipData){
                 $.ajax({
                     type: 'POST',
                     url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/getinfo",
                     dataType: "json",
                     crossDomain: "true",
                     contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(dataInfo),
+                    data: JSON.stringify(shipData),
 
                     success: function (result){
                         console.log(result);
@@ -118,7 +118,8 @@
  						document.getElementById("emailReceive").value = parsed_data.ShopEmail || '';
 						document.getElementById("receiveItemAddress").value = parsed_data.PickItemAddress || '';
 						document.getElementById("emailSend").value = parsed_data.CustomerEmail || '';
-						document.getElementById("sendItemAddress").value = parsed_data.DeliveryAddress || '';                        
+						document.getElementById("sendItemAddress").value = parsed_data.DeliveryAddress || ''; 
+                        document.getElementById("status").value = parsed_data.DeliveryStatus || '';                       
                     },
                     error: function(result){
                         console.log(result);
@@ -130,6 +131,19 @@
                         }, 5000);
                     }
                 })
+            }
+            
+            window.onload = function(){
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const inputOrderID = urlParams.get('OrderID');
+                document.getElementById("OrderID").value = inputOrderID;
+                
+                var dataInfo = {
+                    OrderID: inputOrderID,
+                }
+                // fetch infor of order to update to UI
+                loadShipInfo(dataInfo)
 			};
 
             function onClickSubmit(e){
