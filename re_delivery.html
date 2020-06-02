@@ -28,10 +28,11 @@
 
         <header>
           <!--img src="images/logo.png"-->
+          <a class="btn btn-primary menu-item" style="margin-top:20px;margin-left:20px" href="index.html">Back to Home</a>
         </header>
 
         <section class="form-wrap">
-            <h2 style="font-family:  Algerian; text-align:center; margin-top: 25px;">Re-delivery</h2>
+            <h1 style="font-family:  Segoe UI; text-align:center;font-size:50px">Request Re-Delivery</h1>
 
             <div id="alertOK" class="alert alert-success" role="alert" style="display: none; margin: 15px 310px 0 200px;">
                 SUCCESS!
@@ -49,6 +50,7 @@
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 15px">OrderID</label>
                     <input style="width: 550px;" type="text" id="OrderID"  pattern=".*" required>
+                    <button class="btn-secondary" onclick="getShipInfo((event))">Get Information</button>
                 </div>
                 <div>
                     <label style="width: 200px;margin-left: 200px; margin-top: 50px">Receive Address</label>
@@ -70,6 +72,39 @@
             </form>
         </section>
         <script>
+            function getShipInfo(e){
+                e.preventDefault();
+                loadShipInfo({
+                    OrderID: document.getElementById("OrderID").value,
+                });
+            }
+            
+            function loadShipInfo(shipData){
+                $.ajax({
+                    type: 'POST',
+                    url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/getinfo",
+                    dataType: "json",
+                    crossDomain: "true",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(shipData),
+
+                    success: function (result){
+                        console.log(result);
+						var parsed_data = JSON.parse(result.body);// create an object with the key of the array
+						document.getElementById("receiveItemAddress").value = parsed_data.DeliveryAddress || '';
+                    },
+                    error: function(result){
+                        console.log(result);
+
+                        // show error message
+                        document.getElementById("alertNOTOK").style["display"] = "block";
+                        setTimeout(function(){
+                            document.getElementById("alertNOTOK").style["display"] = "none";
+                        }, 5000);
+                    }
+                })
+            }
+
 			window.onload = function()
 			{
 				const queryString = window.location.search;
@@ -77,6 +112,7 @@
 				const inputOrderID = urlParams.get('OrderID');
 				document.getElementById("OrderID").value = inputOrderID;
 			};
+
             function onClickSubmit(e){
                 e.preventDefault();
                 // Send info
