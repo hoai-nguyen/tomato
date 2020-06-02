@@ -36,18 +36,24 @@
 
     <header>
         <!--img src="images/logo.png"-->
+        <h1 style="font-family: Segoe UI;font-size:40px">TOMATO Express delivery system</h1>
     </header>
-    <h1 style="font-family: Algerian">TOMATO Express delivery system</h1>
+    
     <section class="form-wrap">
-        <div>
-            <a class="btn btn-primary btn-lg menu-item" href="signin.html">Sign In</a>
-            <a class="btn btn-primary btn-lg menu-item" href="register.html">Sign Up</a>
-            <a class="btn btn-primary btn-lg menu-item" href="requestShip.html">Request Ship</a>
-            <a class="btn btn-primary btn-lg menu-item" href="shipInfo.html">Update Shipping Status</a>
-            <a class="btn btn-primary btn-lg menu-item" href="re_delivery.html">Request Re-delivery</a>
-        </div>
+            <a class="btn btn-secondary btn-lg menu-item" href="signin.html">Sign In</a>
+            <a class="btn btn-secondary btn-lg menu-item" href="register.html">Sign Up</a>
+            <a class="btn btn-success btn-lg menu-item" href="requestShip.html">Request Ship</a>
+            <a class="btn btn-success btn-lg menu-item" href="shipInfo.html">Update Shipping Status</a>
+            <a class="btn btn-success btn-lg menu-item" href="re_delivery.html">Request Re-delivery</a>
+            <a class="btn btn-danger btn-lg menu-item" id="signOut">Sign Out</a>
     </section>
 
 </body>
+<script>
+    $('#signOut').click(function() {
+        WildRydes.signOut();
+        window.location = "signin.html";
+    });
+</script>
 
 </html>
