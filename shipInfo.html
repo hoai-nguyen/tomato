@@ -140,8 +140,6 @@
 			var authToken;
             window.onload = function(){
 				// Check authentication
-				var WildRydes = window.WildRydes || {};
-				var authToken;
 				WildRydes.authToken.then(function setAuthToken(token) {
 					if (token) {
 						authToken = token;
