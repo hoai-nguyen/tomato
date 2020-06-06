@@ -1,0 +1,211 @@
+He thong giao van (like Yamato)
+
+Requirement:
+ He thong giao van Tomato (mo phong yamato).
+
+Use case:
+1. Request ship
+2. Pick shipper
+	
+3. Pick item
+	
+4. Ship to customer
+
+
+-------------------
+Chu shop
+ - Request ship
+ - Cancel request...
+
+System
+ - Pick shipper
+
+Shipper
+ - pick item
+ - ship to customer (succeed, failed)
+   * Succeed : Notify to customer and shop
+   * Failed : Notify to customer to request re-delivery
+
+
+Customer
+ - Request re-delivery (in case failed)
+
+Exception
+ - Neu dung EC2 thi consider
+
+-------------------------------
+Solution
+1. Dung S3 de luu tru 
+2. DynamoDB save record
+3. Lamda to calulate
+4. Use Queue to handle request
+5. Dung API Gateway, SES to send notify
+6. VPC, IAM
+7. Route53 (may be)
+8. Cloudwatch to view log, history..., succeed/failed events...
+--------------------------------
+
+
+è⁄ÇµÇ≠Flow
+
+1. Register account
+ - Use gmail/phone
+ - After registered --> send confirm mail to customer.
+ - 
+
+2. Login
+ - Use mail/pass to login
+
+3. Request ship
+ - Send/receive address
+ - Item overview information (name, type, description,...) <-- use json object
+ - Order ID (auto gen)
+ - 
+
+4. After step 3, system select shiper
+ - Send email to shipper to pick item
+ - Send email to shop notify that shipper avaiable
+ - 
+
+5. Shipper pick item
+ - Update status = Pick
+ - Send email to customer notify that item has been picked and start to delivery...
+ - Send email to shop notify that item has been picked.
+
+
+6. Ship to custom
+ - Login
+ - Notify status to system
+   - Succeed :
+     * Send mail to customer/shop notify that item has been deliveried
+   - Failed :
+     * Send mail to customer notify that item is not succeed (include request ID and link)
+
+7. If user click to link, transit to re-delivery screen
+    - Request ID (new)
+    - Send mail to shipper to re-delivery
+    - Back to step 6
+
+------------------------
+âÊñ ÉäÉXÉg
+
+1. Log in/log out (Shop and Shipper)
+  -> Linh co sample roi
+  -> Username(gmail) and pass auto gen
+2. Request ship
+3. Shipper confirm status (succeed, failed)
+4. Re-delivery request (from user)
+
+-------------------------
+çÄñ⁄ÉäÉXÉg
+ÅyNo.1Åz
+ - Username, password
+
+ÅyNo.2Åz
+ - Order ID (Auto gen)
+ - Item information
+ - Datetime (pick item date, receive date)
+ - Send/Receive information(address, mail,..) (Shop, shipper)
+ - Submit button
+
+ÅyNo.3Åz
+ - Order ID (Same to No.2)
+ - Pick/Succeed/Failed selection
+   -> Pick : Send mail to customer
+   -> Succeed : Send mail to shop, customer
+   -> Failed : Send mail to customer
+ - Submit button
+
+ÅyNo.4Åz
+ - Order ID (readonly)
+ - Calendar selection
+ - Submit button
+Å@ -> Send mail to shipper, customer
+
+-------------------------------
+Database (DynamoDB)
+1. Operation
+  - Insert
+  - Update
+
+2. Table
+  - Order
+    - Information (name, type, description)
+    - Order ID
+    - Status (new/picked/succeed/failed/return)
+    - Pick item datetime
+    - Receive datetime
+    - Delivery count
+    - Send/receive information (mail, address, phone)
+    - Re-delivery datetime
+
+  - Shipper
+    - Shipper list
+        - Information (mail, address, phone)
+
+
+-------------------------------
+Lamda
+ÅyNo.1Åz
+ñ≥Çµ
+
+ÅyNo.2Åz
+1. Insert record to DB
+2. Send mail
+  - Shop, shipper
+3. Gen ID
+  - Order ID
+
+
+ÅyNo.3Åz
+1. Update DB
+2. Send mail
+   -> Pick : Send mail to customer
+   -> Succeed : Send mail to shop, customer
+   -> Failed : Send mail to customer
+
+
+ÅyNo.4Åz
+1. Update DB
+2. Send mail to shipper, customer
+
+-------------------------------
+
+
+
+Note:
+
+2020/05/24 1h30 call
+ - Ve architect design
+ - Linh create DynamoDB, HTML
+
+
+Team Mail address:
+Thuan : ThuanPV3
+Linh : LinhNQ2
+Hoai : HoaiNV
+A.Tan : TanTN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
