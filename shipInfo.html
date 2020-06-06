@@ -160,7 +160,9 @@
                     OrderID: inputOrderID,
                 }
                 // fetch infor of order to update to UI
-                loadShipInfo(dataInfo)
+                if (document.getElementById("OrderID").value){
+                    loadShipInfo(dataInfo);
+                }
 			};
 
             function onClickSubmit(e){
