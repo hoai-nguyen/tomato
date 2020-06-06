@@ -118,13 +118,14 @@
         </section>
 
         <script>
-            // Check authentication
-            var WildRydes = window.WildRydes || {};
-            var authToken;
+
 			window.onload = function(){
+				// Check authentication
+				var WildRydes = window.WildRydes || {};
+				//window.authToken;
 				WildRydes.authToken.then(function setAuthToken(token) {
 					if (token) {
-						authToken = token;
+						window.authToken = token;
 					} else {
 						window.location.href = '/signin.html';
 					}
@@ -184,17 +185,17 @@
                 // request data 
                 $.ajax({
                     type: 'POST',
+					headers: {
+						Authorization: authToken
+					},
                     url: "https://24kahpcx3l.execute-api.ap-southeast-2.amazonaws.com/aws-2020-01-nhom1-tomato-apigw/requestship",
                     dataType: "json",
-                    headers: {
-                        Authorization: authToken
-                    },
                     crossDomain: "true",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(data),
 
                     success: function (result){
-                        // document.getElementById("requestShipForm").reset();
+                        document.getElementById("requestShipForm").reset();
                         
                         document.getElementById("alertOK").style["display"] = "block";
                         setTimeout(function(){
@@ -215,14 +216,14 @@
                 document.getElementById("fullNameSend").value = "Nguyen Van Send";
                 document.getElementById("AddressSend").value = "471-0034 Aichi Nagoya Toyotashi";
                 document.getElementById("PhoneSend").value = "0987654321";
-                document.getElementById("EmailSend").value = "sender@gmail.com";
+                document.getElementById("EmailSend").value = "aws202001.group1.shop@gmail.com";
                 document.getElementById("pickDateTime").value = "2020-05-29T23:06";
 
                 // // receive info
                 document.getElementById("fullNameReceive").value = "Nguyen Van Receive";
                 document.getElementById("AddressReceive").value = "471-0034 Aichi Nagoya Toyotashi";
                 document.getElementById("PhoneReceive").value = "0987654321";
-                document.getElementById("EmailReceive").value = "receive@gmail.com";
+                document.getElementById("EmailReceive").value = "aws202001.group1.customer@gmail.com";
                 document.getElementById("receiveDateTime").value = "2020-05-29T23:06";
             }
 
